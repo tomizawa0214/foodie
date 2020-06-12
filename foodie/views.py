@@ -24,7 +24,7 @@ def Search(request):
         searchform = SearchForm(request.POST)
 
         if searchform.is_valid():
-            category_1 = request.GET['category_1']
+            category_l = request.GET['category_l']
             pref = request.GET['pref']
             freeword = request.GET['freeword']
             num = 50
@@ -65,7 +65,7 @@ def Search(request):
             web_reserve = request.GET['web_reserve']
             query = get_gnavi_data(
                 "",
-                category_1,
+                category_l,
                 pref,
                 freeword,
                 num,
@@ -114,7 +114,7 @@ def Search(request):
             'restaurant_list': restaurant_list
         }
 
-        return render(request, 'foodie/serch.html', context)
+        return render(request, 'foodie/search.html', context)
 
 def gnavi_api(query):
     result = []
@@ -126,7 +126,7 @@ def gnavi_api(query):
 
 def get_gnavi_data(
         id,
-        category_1,
+        category_l,
         pref,
         freeword,
         hit_per_page,
@@ -158,7 +158,7 @@ def get_gnavi_data(
         special_holiday_lunch='0',
         e_money='0',
         caterling='0',
-        brealfast='0',
+        breakfast='0',
         desert_buffet='0',
         lunch_buffet='0',
         bento='0',
@@ -170,7 +170,7 @@ def get_gnavi_data(
         "keyid": GNAVI_KEY,
         "id": id,
         "pref": pref,
-        "category_1": category_1,
+        "category_l": category_l,
         "freeword": freeword,
         "hit_per_page": hit_per_page,
         "lunch": lunch,
@@ -247,7 +247,7 @@ def get_restaurant_info(restaurants):
         areaname = restaurant["code"]["areaname"]
         prefname = restaurant["code"]["prefname"]
         areaname_s = restaurant["code"]["areaname_s"]
-        category_name_1 = " | ".join(filter(lambda a: a != '', restaurant["code"]["category_name_1"]))
+        category_name_l = " | ".join(filter(lambda a: a != '', restaurant["code"]["category_name_l"]))
         category_name_s = " | ".join(filter(lambda a: a != '', restaurant["code"]["category_name_s"]))
         budget = restaurant["budget"]
         party = restaurant["party"]
@@ -255,44 +255,44 @@ def get_restaurant_info(restaurants):
         credit_card = restaurant["credit_card"]
         e_money = restaurant["e_money"]
 
-        restaurant_list.apppend([
-            id,
-            update_date,
-            name,
-            name_kana,
-            latitude,
-            longitude,
-            category,
-            url,
-            url_mobile,
-            coupon_url_pc,
-            coupon_url_mobile,
-            shop_image1,
-            shop_image2,
-            qrcode,
-            address,
-            tel,
-            tel_sub,
-            fax,
-            opentime,
-            holiday,
-            line,
-            station,
-            station_exit,
-            walk,
-            note,
-            parking_lots,
-            pr_short,
-            pr_long,
-            areaname,
-            prefname,
-            areaname_s,
-            category_namae_l,
-            kategory_name_s,
-            budget,
-            party,
-            lunch,
-            credit_card,
-            e_money
+        restaurant_list.append([
+            id, # 0
+            update_date, # 1
+            name, # 2
+            name_kana, # 3
+            latitude, # 4
+            longitude, # 5
+            category, # 6
+            url, # 7
+            url_mobile, # 8
+            coupon_url_pc, # 9
+            coupon_url_mobile, # 10
+            shop_image1, # 11
+            shop_image2, # 12
+            qrcode, # 13
+            address, # 14
+            tel, # 15
+            tel_sub, # 16
+            fax, # 17
+            opentime, # 18
+            holiday, # 19
+            line, # 20
+            station, # 21
+            station_exit, # 22
+            walk, # 23
+            note, # 24
+            parking_lots, # 25
+            pr_short, # 26
+            pr_long, # 27
+            areaname, # 28
+            prefname, # 29
+            areaname_s, # 30
+            category_name_l, # 31
+            category_name_s, # 32
+            budget, # 33
+            party, # 34
+            lunch, # 35
+            credit_card, # 36
+            e_money # 37
         ])
     return restaurant_list
