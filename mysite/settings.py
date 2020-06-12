@@ -14,6 +14,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'foodie.apps.FoodieConfig',
+    'accounts.apps.AccountsConfig',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
 ]
 
 MIDDLEWARE = [
@@ -93,3 +97,15 @@ except ImportError:
 
 if not DEBUG:
     SECRET_KEY = os.environ['SECRET_KEY']
+
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/'
+# SignUpした時に確認Emailアドレスを送信しない場合
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+# SignUpした時に確認Emailアドレスを送信する場合
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'gmail adress'
+# EMAIL_HOST_PASSWORD = 'gmail password'
+# EMAIL_USE_TLS = True
