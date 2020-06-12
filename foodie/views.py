@@ -296,3 +296,20 @@ def get_restaurant_info(restaurants):
             e_money # 37
         ])
     return restaurant_list
+
+def ShopInfo(request, restid):
+    query = get_gnavi_data(
+        restid,
+        "",
+        "",
+        "",
+        1
+    )
+    result = gnavi_api(query)
+    restaurants_info = get_restaurant_info(result)
+
+    if request.method == 'GET':
+        params = {
+            'restaurants_info': restaurants_info,
+        }
+        return render(request, 'foodie/shop_info.html', params)
