@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
-from .models import Pref, Category
-from .forms import SearchForm
+from .models import Pref, Category, Review
+from .forms import SearchForm, ReviewForm
+from django.db.models import Avg
 import json
 import requests
 
@@ -313,3 +314,45 @@ def ShopInfo(request, restid):
             'restaurants_info': restaurants_info,
         }
         return render(request, 'foodie/shop_info.html', params)
+
+    if request.method == 'GET':
+        review_count = Review.objects.filter(shop_id=restid).count()
+        score_ave = Review.objects.filter(shop_id=restid).aggregate(Avg('score'))
+        average = score_ave['score__avg']
+        if average:
+            average_rate = average / 5 * 100
+        else:
+            average_rate = 0
+        review_form = ReviewFrom()
+        review_list = Review.objects.filter(shop_id=restid)
+
+        params = {
+            'review_count': review_count,
+            'restaurants_info': restaurants_info,
+            'review_form': review_form,
+            'review_list': review_list,
+            'average': average,
+            'average_rate': average_rate,
+        }
+        return render(request, 'foodie/shop_info.html', params)
+    else:
+        form = ReviewForm(data=request.POST)
+
+        if form.is_valid():
+            review = Review()
+            review.shop_id = restid
+            review.shop_name = restaurants_info[0][2]
+            review.user = request.user
+            review.score = request.POST['score']
+            review.comment = request.POST['comment']
+            is_exist = Review.objects.filter(shop_id = review.shop_id).filter(user = review.user).count()
+
+            if is_exist:
+                message.error(request, '口コミを投稿済みです')
+            else:
+                review.save()
+                messages.success(request, '口コミを投稿しました')
+        else:
+            messages.error(request, 'エラーがあります')
+
+        return redirect('shop_info', restid)
