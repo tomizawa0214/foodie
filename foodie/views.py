@@ -3,6 +3,7 @@ from django.views.generic import TemplateView
 from .models import Pref, Category, Review
 from .forms import SearchForm, ReviewForm
 from django.db.models import Avg
+from django.contrib import messages
 import json
 import requests
 
@@ -310,12 +311,6 @@ def ShopInfo(request, restid):
     restaurants_info = get_restaurant_info(result)
 
     if request.method == 'GET':
-        params = {
-            'restaurants_info': restaurants_info,
-        }
-        return render(request, 'foodie/shop_info.html', params)
-
-    if request.method == 'GET':
         review_count = Review.objects.filter(shop_id=restid).count()
         score_ave = Review.objects.filter(shop_id=restid).aggregate(Avg('score'))
         average = score_ave['score__avg']
@@ -323,7 +318,7 @@ def ShopInfo(request, restid):
             average_rate = average / 5 * 100
         else:
             average_rate = 0
-        review_form = ReviewFrom()
+        review_form = ReviewForm()
         review_list = Review.objects.filter(shop_id=restid)
 
         params = {
@@ -348,7 +343,7 @@ def ShopInfo(request, restid):
             is_exist = Review.objects.filter(shop_id = review.shop_id).filter(user = review.user).count()
 
             if is_exist:
-                message.error(request, '口コミを投稿済みです')
+                messages.error(request, '口コミを投稿済みです')
             else:
                 review.save()
                 messages.success(request, '口コミを投稿しました')

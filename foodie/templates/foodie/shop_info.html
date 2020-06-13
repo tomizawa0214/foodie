@@ -49,7 +49,7 @@
                         <i class="fas fa-comment-dots fa-fw"></i>{{ review_count }}件
                     </div>
                 </div>
-                {% ekse %}
+                {% else %}
                     <p>まだ口コミはありません。</p>
                 {% endif %}
                 <hr>
@@ -143,15 +143,15 @@
                             {{ review_form.non_field_errors }}
                             <div class="evaluation">
                                 <input type="hidden" name="score" value="3">
-                                <input type="score1" type="radio" name="score" value="5" />
+                                <input id="score1" type="radio" name="score" value="5" />
                                 <label for="score1"><span class="text">最高</span>★</label>
-                                <input type="score2" type="radio" name="score" value="4" />
+                                <input id="score2" type="radio" name="score" value="4" />
                                 <label for="score2"><span class="text">良い</span>★</label>
-                                <input type="score3" type="radio" name="score" value="3" />
+                                <input id="score3" type="radio" name="score" value="3" />
                                 <label for="score3"><span class="text">普通</span>★</label>
-                                <input type="score4" type="radio" name="score" value="2" />
+                                <input id="score4" type="radio" name="score" value="2" />
                                 <label for="score4"><span class="text">悪い</span>★</label>
-                                <input type="score5" type="radio" name="score" value="1" />
+                                <input id="score5" type="radio" name="score" value="1" />
                                 <label for="score5"><span class="text">最悪</span>★</label>
                             </div>
 
