@@ -16,8 +16,26 @@ class IndexView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         searchform = SearchForm()
 
+        # おすすめ店
+        category_l = "RSFST09000" # 居酒屋
+        pref = "PREF10" # 群馬県
+        freeword = "歓送迎会"
+        num = 6
+
+        query = get_gnavi_data(
+            "",
+            category_l,
+            pref,
+            freeword,
+            num
+        )
+
+        result = gnavi_api(query)
+        pickup_restaurant = get_restaurant_info(result)
+
         params = {
-            'searchform': searchform
+            'searchform': searchform,
+            'pickup_restaurant': pickup_restaurant,
         }
         return params
 
