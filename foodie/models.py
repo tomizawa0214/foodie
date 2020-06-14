@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Category(models.Model):
-    category_1 = models.CharField("大業態コード", max_length=10, blank=False)
+    category_l = models.CharField("大業態コード", max_length=10, blank=False)
     name = models.CharField("カテゴリ名", max_length=30, blank=False)
 
     def __str__(self):
