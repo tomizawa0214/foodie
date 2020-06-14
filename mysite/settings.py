@@ -1,10 +1,11 @@
 import os
+import dj_database_url
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -18,7 +19,11 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
+    'cloudinary',
+    'cloudinary_storage',
 ]
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -53,8 +58,12 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'name',
+        'USER': 'user',
+        'PASSWORD': '',
+        'HOST': 'host',
+        'PORT': '',
     }
 }
 
@@ -86,17 +95,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOt = os.path.join(BASE_DIR, 'staticfiles')
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
-
-try:
-    from .local_settings import *
-except ImportError:
-    pass
-
-if not DEBUG:
-    SECRET_KEY = os.environ['SECRET_KEY']
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'static'),
+# )
 
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
@@ -109,3 +110,21 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 # EMAIL_HOST_USER = 'gmail adress'
 # EMAIL_HOST_PASSWORD = 'gmail password'
 # EMAIL_USE_TLS = True
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass
+
+if not DEBUG:
+    import django_heroku
+    django_heroku.settings(locals())
+    SECRET_KEY = os.environ['SECRET_KEY']
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': os.environ['CLOUD_NAME'],
+        'API_KEY': os.environ['API_KEY'],
+        'API_SECRET': os.environ['API_SECRET']
+    }
+
+db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
+DATABASES['default'].update(db_from_env)
