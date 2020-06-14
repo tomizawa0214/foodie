@@ -4,8 +4,10 @@ from .models import Pref, Category, Review
 from .forms import SearchForm, ReviewForm
 from django.db.models import Avg
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import json
 import requests
+
 
 GNAVI_URL = "https://api.gnavi.co.jp/RestSearchAPI/v3/"
 GNAVI_KEY = "c217fca9b867dc74d2e68d3ec67af7f8"
@@ -128,13 +130,26 @@ def Search(request):
             result = gnavi_api(query)
             total_hit_count = len(result)
             restaurant_list = get_restaurant_info(result)
+            page_obj = paginate_queryset(request, restaurant_list, 10)
 
         context = {
             'total_hit_count': total_hit_count,
-            'restaurant_list': restaurant_list
+            'restaurant_list': page_obj.object_list,
+            'page_obj': page_obj,
         }
 
         return render(request, 'foodie/search.html', context)
+
+def paginate_queryset(request, queryset, count):
+    paginator = Paginator(queryset, count)
+    page = request.GET.get('page')
+    try:
+        page_obj = paginator.page(page)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+    return page_obj
 
 def gnavi_api(query):
     result = []
