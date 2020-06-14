@@ -33,7 +33,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -95,10 +94,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOt = os.path.join(BASE_DIR, 'staticfiles')
-
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'static'),
-# )
 
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
