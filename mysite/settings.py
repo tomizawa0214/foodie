@@ -33,6 +33,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -117,14 +118,14 @@ except ImportError:
     pass
 
 if not DEBUG:
-    import django_heroku
-    django_heroku.settings(locals())
     SECRET_KEY = os.environ['SECRET_KEY']
     CLOUDINARY_STORAGE = {
         'CLOUD_NAME': os.environ['CLOUD_NAME'],
         'API_KEY': os.environ['API_KEY'],
         'API_SECRET': os.environ['API_SECRET']
     }
+    import django_heroku
+    django_heroku.settings(locals())
 
 db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
 DATABASES['default'].update(db_from_env)
