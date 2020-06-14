@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col-lg-8 col-md-10 mx-auto">
                     <div class="site-heading">
-                        <h1>Search for Restaurants</h1>
+                        <h1>Restaurants in Gunma</h1>
                     </div>
                 </div>
             </div>
@@ -28,10 +28,10 @@
             <div class="row mb-4">
                 <div class="col-md-4">
                     <label>エリア</label>
-                    <select class="form-control" name="pref">
+                    <select class="form-control" name="areacode_m">
                         <option value="">こだわらない</option>
-                        {% for item in pref_list %}
-                            <option value="{{item.pref}}">{{ item.name }}</option>
+                        {% for item in area_list %}
+                            <option value="{{item.areacode_m}}">{{ item.name }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -87,7 +87,7 @@
                         <label class="form-check-label" for="mobilephone">
                             <input type="hidden" name="mobilephone" value="0">
                             <input type="checkbox" class="form-check-input" id="mobilephone" name="mobilephone" value="1">
-                            携帯の電波
+                            携帯電波あり
                         </label>
                     </div>
                 </div>
@@ -378,7 +378,7 @@
         </form>
     </div>
 
-    <h2 class="mb-4">歓送迎会 おすすめのお店<i class="fas fa-bear my-icon2"></i></h2>
+    <!-- <h2 class="mb-4">歓送迎会 おすすめのお店<i class="fas fa-bear my-icon2"></i></h2>
 
     <div class="row">
         {% for restaurant in pickup_restaurant %}
@@ -392,7 +392,7 @@
                 <div class="card-body">
                     <strong class="d-inline-block mb-2 text-success">{{ restaurant.32 }}</strong>
                     <h4 class="mb-2">{{ restaurant.2 }}</h4>
-                    <p class="card-text mb-1"><i class="fas fa-subway fa-fw my-icon"></i>{{ restaurant.21 }}・徒歩{{ restaurant.23 }}分</p>
+                    <p class="card-text mb-1"><i class="fas fa-subway fa-fw my-icon"></i>{{ restaurant.21 }}・{{ restaurant.23 }}分</p>
                     <p class="card-text mb-2"><i class="fas fa-yen-sign fa-fw my-icon"></i>平均{{ restaurant.33 }}円</p>
                     <p class="card-text mb-auto">{{ restaurant.26|linebreaksbr }}</p>
                 </div>
@@ -400,5 +400,5 @@
             </div>
         </div>
         {% endfor %}
-    </div>
+    </div> -->
 {% endblock content %}

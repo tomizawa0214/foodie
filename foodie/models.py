@@ -8,9 +8,9 @@ class Category(models.Model):
     def __str__(self):
         return str(self.name)
 
-class Pref(models.Model):
-    pref = models.CharField("都道府県コード", max_length=6, blank=False)
-    name = models.CharField("都道府県名", max_length=10, blank=False)
+class Area(models.Model):
+    areacode_m = models.CharField("エリアコード", max_length=10, blank=False)
+    name = models.CharField("エリア名", max_length=10, blank=False)
 
     def __str__(self):
         return str(self.name)

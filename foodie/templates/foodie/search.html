@@ -7,7 +7,68 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-lg-9">
+            {% if restaurant_list %}
+                <p class="my-4">検索結果 {{ total_hit_count }} 件 <small>{{ page_obj.start_index }}～{{ page_obj.end_index }}件を表示</small></p>
+                {% for restaurant in restaurant_list %}
+                <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col-sm-5">
+                        {% if restaurant.11 %}
+                            <img src="{{ restaurant.11 }}" alt="{{ restaurant.2 }}" class="img-rounded img-fluid img-search">
+                        {% else %}
+                            <img src="https://placehold.jp/300x300.png?text=No Image" alt="{{ restaurant.2 }}" class="img-rounded img-fluid img-search">
+                        {% endif %}
+                    </div>
+                    <div class="col-sm-7 p-4 d-flex flex-column position-static">
+                        <strong class="d-inline-block mb-2 text-success">{{ restaurant.32 }}</strong>
+                        <h4 class="mb-2">{{ restaurant.2 }}</h4>
+                        <p class="card-text mb-1"><i class="fas fa-subway fa-fw my-icon"></i>{{ restaurant.21 }}・{{ restaurant.23 }}分</p>
+                        <p class="card-text mb-2"><i class="fas fa-yen-sign fa-fw my-icon"></i>平均{{ restaurant.33 }}円</p>
+                        <p class="card-text mb-auto">{{ restaurant.26 }}</p>
+                        <a href="{% url 'shop_info' restaurant.0 %}" class="stretched-link"></a>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?{% url_replace request 'page' page_obj.previous_page_number %}">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="page-item active">
+                                <a class="page-link" href="#!">
+                                    {{ num }}
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a class="page-link" href="?{% url_replace request 'page' num %}">
+                                    {{ num }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?{% url_replace request 'page' page_obj.next_page_number %}">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            {% else %}
+                <h4 class="mt-5">該当するものはありません。</h4>
+            {% endif %}
+        </div>
+
+        <div class="col-lg-3">
             <div class="card my-4">
                 <h5 class="card-header">お店を探す</h5>
                 <div class="card-body">
@@ -15,10 +76,10 @@
                         <div class="row">
                             <div class="col-12 mb-2">
                                 <label>エリア</label>
-                                <select class="form-control" name="pref">
+                                <select class="form-control" name="areacode_m">
                                     <option value="">こだわらない</option>
-                                    {% for item in pref_list %}
-                                        <option value="{{item.pref}}">{{ item.name }}</option>
+                                    {% for item in area_list %}
+                                        <option value="{{item.areacode_m}}">{{ item.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -69,7 +130,7 @@
                                     <label class="form-check-label" for="mobilephone">
                                         <input type="hidden" name="mobilephone" value="0">
                                         <input type="checkbox" class="form-check-input" id="mobilephone" name="mobilephone" value="1">
-                                        携帯の電波
+                                        携帯電波あり
                                     </label>
                                 </div>
                             </div>
@@ -359,67 +420,6 @@
                     </form>
                 </div>
             </div>
-        </div>
-
-        <div class="col-md-9">
-            {% if restaurant_list %}
-                <p class="my-4">検索結果 {{ total_hit_count }} 件 <small>{{ page_obj.start_index }}～{{ page_obj.end_index }}件を表示</small></p>
-                {% for restaurant in restaurant_list %}
-                <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                    <div class="col-auto">
-                        {% if restaurant.11 %}
-                            <img src="{{ restaurant.11 }}" alt="{{ restaurant.2 }}" class="img-rounded img-responsive img-search">
-                        {% else %}
-                            <img src="https://placehold.jp/300x300.png?text=No Image" alt="{{ restaurant.2 }}" class="img-rounded img-responsive img-search">
-                        {% endif %}
-                    </div>
-                    <div class="col p-4 d-flex flex-column position-static">
-                        <strong class="d-inline-block mb-2 text-success">{{ restaurant.32 }}</strong>
-                        <h4 class="mb-2">{{ restaurant.2 }}</h4>
-                        <p class="card-text mb-1"><i class="fas fa-subway fa-fw my-icon"></i>{{ restaurant.21 }}・徒歩{{ restaurant.23 }}分</p>
-                        <p class="card-text mb-2"><i class="fas fa-yen-sign fa-fw my-icon"></i>平均{{ restaurant.33 }}円</p>
-                        <p class="card-text mb-auto">{{ restaurant.26 }}</p>
-                        <a href="{% url 'shop_info' restaurant.0 %}" class="stretched-link"></a>
-                    </div>
-                </div>
-                {% endfor %}
-
-                <ul class="pagination justify-content-center">
-                    {% if page_obj.has_previous %}
-                        <li class="page-item">
-                            <a class="page-link" href="?{% url_replace request 'page' page_obj.previous_page_number %}">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                    {% endif %}
-
-                    {% for num in page_obj.paginator.page_range %}
-                        {% if page_obj.number == num %}
-                            <li class="page-item active">
-                                <a class="page-link" href="#!">
-                                    {{ num }}
-                                </a>
-                            </li>
-                        {% else %}
-                            <li class="page-item">
-                                <a class="page-link" href="?{% url_replace request 'page' num %}">
-                                    {{ num }}
-                                </a>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-
-                    {% if page_obj.has_next %}
-                        <li class="page-item">
-                            <a class="page-link" href="?{% url_replace request 'page' page_obj.next_page_number %}">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    {% endif %}
-                </ul>
-            {% else %}
-                <h4 class="mt-5">該当するものはありません。</h4>
-            {% endif %}
         </div>
     </div>
 {% endblock content %}

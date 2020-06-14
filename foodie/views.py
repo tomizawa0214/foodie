@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
-from .models import Pref, Category, Review
+from .models import Area, Category, Review
 from .forms import SearchForm, ReviewForm
 from django.db.models import Avg
 from django.contrib import messages
@@ -19,25 +19,28 @@ class IndexView(TemplateView):
         searchform = SearchForm()
 
         # おすすめ店
-        category_l = "RSFST09000" # 居酒屋
-        pref = "PREF10" # 群馬県
-        freeword = "歓送迎会"
-        num = 6
+        # category_l = "RSFST09000" # 居酒屋
+        # pref = "PREF10" # 群馬県
+        # freeword = "歓送迎会"
+        # num = 6
 
-        query = get_gnavi_data(
-            "",
-            category_l,
-            pref,
-            freeword,
-            num
-        )
+        # query = get_gnavi_data(
+        #     "",
+        #     category_l,
+        #     pref,
+        #     freeword,
+        #     num
+        # )
 
-        result = gnavi_api(query)
-        pickup_restaurant = get_restaurant_info(result)
+        # result = gnavi_api(query)
+        # pickup_restaurant = get_restaurant_info(result)
 
+        # params = {
+        #     'searchform': searchform,
+        #     'pickup_restaurant': pickup_restaurant,
+        # }
         params = {
-            'searchform': searchform,
-            'pickup_restaurant': pickup_restaurant,
+            'searchform': searchform
         }
         return params
 
@@ -47,7 +50,7 @@ def Search(request):
 
         if searchform.is_valid():
             category_l = request.GET['category_l']
-            pref = request.GET['pref']
+            areacode_m = request.GET['areacode_m']
             freeword = request.GET['freeword']
             num = 50
             lunch = request.GET['lunch']
@@ -88,7 +91,7 @@ def Search(request):
             query = get_gnavi_data(
                 "",
                 category_l,
-                pref,
+                areacode_m,
                 freeword,
                 num,
                 lunch,
@@ -162,7 +165,7 @@ def gnavi_api(query):
 def get_gnavi_data(
         id,
         category_l,
-        pref,
+        areacode_m,
         freeword,
         hit_per_page,
         lunch='0',
@@ -204,7 +207,7 @@ def get_gnavi_data(
     query = {
         "keyid": GNAVI_KEY,
         "id": id,
-        "pref": pref,
+        "areacode_m": areacode_m,
         "category_l": category_l,
         "freeword": freeword,
         "hit_per_page": hit_per_page,
@@ -328,7 +331,7 @@ def get_restaurant_info(restaurants):
             party, # 34
             lunch, # 35
             credit_card, # 36
-            e_money # 37
+            e_money, # 37
         ])
     return restaurant_list
 

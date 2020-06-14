@@ -1,11 +1,11 @@
 from django import forms
-from .models import Category, Pref, Review
+from .models import Category, Area, Review
 
 class SearchForm(forms.Form):
-    pref = forms.ModelChoiceField(
-        label='都道府県',
+    area = forms.ModelChoiceField(
+        label='エリア名',
         required=False,
-        queryset=Pref.objects,
+        queryset=Area.objects,
     )
     category = forms.ModelChoiceField(
         label='カテゴリ',
@@ -21,7 +21,7 @@ class SearchForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        pref = self.fields['pref']
+        area = self.fields['area']
         category = self.fields['category']
 
 class ReviewForm(forms.ModelForm):

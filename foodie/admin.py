@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Pref
+from .models import Category, Area
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -7,8 +7,8 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display_links = ('category_l',)
     list_editable = ('name',)
 
-@admin.register(Pref)
-class PrefAdmin(admin.ModelAdmin):
-    list_display = ('pref', 'name')
-    list_display_links = ('pref',)
+@admin.register(Area)
+class AreaAdmin(admin.ModelAdmin):
+    list_display = ('areacode_m', 'name')
+    list_display_links = ('areacode_m',)
     list_editable = ('name',)
